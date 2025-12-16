@@ -1,0 +1,29 @@
+﻿@{
+    Layout = null;
+}
+
+<!doctype html>
+<html class="no-js " lang="en">
+@await Component.InvokeAsync("_AdminLayoutHeadComponentPartial")
+<body class="theme-orange">
+    <!-- Page Loader -->
+    @await Component.InvokeAsync("_AdminLayoutPageLoaderComponentPartial")
+
+
+
+    <!-- Top Bar -->
+    @await Component.InvokeAsync("_AdminLayoutNavbarComponentPartial")
+
+    <!-- Left Sidebar -->
+    @await Component.InvokeAsync("_AdminLayoutSidebarComponentPartial")
+
+
+    <section class="content">
+    </section>
+    <!-- Jquery Core Js -->
+    <script src="/html/assets/bundles/libscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
+    <script src="/html/assets/bundles/vendorscripts.bundle.js"></script> <!-- Lib Scripts Plugin Js -->
+
+    <script src="/html/assets/bundles/mainscripts.bundle.js"></script><!-- Custom Js -->
+</body>
+</html>
