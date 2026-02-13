@@ -11,13 +11,10 @@
     <div class="menu">
         <ul class="list">
             <li class="header">NAVIGATIONS</li>
-            <li><a href="widgets.html"><i class="zmdi zmdi-delicious"></i><span>Kategoriler</span> </a></li>
-            <li><a href="mail-inbox.html"><i class="zmdi zmdi-email"></i><span>Ürünler</span> </a></li>
-            <li><a href="blog-dashboard.html"><i class="zmdi zmdi-car"></i><span>Müşteriler</span> </a></li>
-            <li><a href="blog-dashboard.html"><i class="zmdi zmdi-person"></i><span>Siparişler</span> </a></li>
-            <li><a href="blog-dashboard.html"><i class="zmdi zmdi-school"></i><span>İstatistikler</span> </a></li>
-            <li><a href="blog-dashboard.html"><i class="zmdi zmdi-home"></i><span>Grafikler</span> </a></li>
-            <li><a href="blog-dashboard.html"><i class="zmdi zmdi-blogger"></i><span>Veri Tahminleme</span> </a></li>
+            <li><a asp-controller="Category" asp-action="CategoryList"><i class="zmdi zmdi-delicious"></i><span>Kategoriler</span> </a></li>
+            <li><a asp-controller="Product" asp-action="ProductList"><i class="zmdi zmdi-coffee"></i><span>Ürünler</span> </a></li>
+            <li><a asp-controller="Customer" asp-action="CustomerList"><i class="zmdi zmdi-accounts"></i><span>Müşteriler</span> </a></li>
+            <li><a asp-controller="Order" asp-action="OrderList"><i class="zmdi zmdi-shopping-basket"></i><span>Siparişler</span> </a></li>
         </ul>
     </div>
     <!-- #Menu -->
