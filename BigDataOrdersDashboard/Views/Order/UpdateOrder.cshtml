@@ -1,9 +1,4 @@
 ﻿@model BigDataOrdersDashboard.Entities.Order
-@{
-    var products = ViewBag.Products as List<BigDataOrdersDashboard.Entities.Product>;
-    var customers = ViewBag.Customers as List<BigDataOrdersDashboard.Entities.Customer>;
-}
-
 <section class="content">
     <div class="block-header">
         <div class="row">
@@ -31,10 +26,14 @@
                         <form method="post">
                             <input type="hidden" asp-for="OrderId" />
                             <label>Ürün Id</label>
-                            <input type="text" asp-for="ProductId" class="form-control" />
+                            <select asp-for="ProductId" asp-items="ViewBag.ProductList" class="form-control show-tick" required>
+                                <option value="">-- Ürün Seçiniz --</option>
+                            </select>
                             <br />
                             <label>Müşteri Id</label>
-                            <input type="text" asp-for="CustomerId" class="form-control" />
+                            <select asp-for="CustomerId" asp-items="ViewBag.CustomerList" class="form-control show-tick" required>
+                                <option value="">-- Müşteri Seçiniz --</option>
+                            </select>
                             <br />
                             <label>Miktar/Adet</label>
                             <input type="text" asp-for="Quantity" class="form-control" />
