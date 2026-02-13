@@ -1,6 +1,7 @@
 ﻿using BigDataOrdersDashboard.Context;
 using BigDataOrdersDashboard.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BigDataOrdersDashboard.Controllers
@@ -33,8 +34,22 @@ namespace BigDataOrdersDashboard.Controllers
         [HttpGet]
         public IActionResult CreateOrder()
         {
-            ViewBag.Products = _context.Products.ToList();
-            ViewBag.Customers = _context.Customers.ToList();
+            ViewBag.ProductList = _context.Products
+                .Select(x => new SelectListItem
+                {
+                    Text = x.ProductName,
+                    Value = x.ProductId.ToString()
+                })
+                .ToList();
+
+            ViewBag.CustomerList = _context.Customers
+                .Select(x => new SelectListItem
+                {
+                    Text = x.CustomerName + " " + x.CustomerSurname,
+                    Value = x.CustomerId.ToString()
+                })
+                .ToList();
+
             return View();
         }
 
@@ -59,8 +74,29 @@ namespace BigDataOrdersDashboard.Controllers
         public IActionResult UpdateOrder(int id)
         {
             var value = _context.Orders.Find(id);
-            ViewBag.Products = _context.Products.ToList();
-            ViewBag.Customers = _context.Customers.ToList();
+            if (value == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.ProductList = _context.Products
+                .Select(x => new SelectListItem
+                {
+                    Text = x.ProductName,
+                    Value = x.ProductId.ToString(),
+                    Selected = x.ProductId == value.ProductId
+                })
+                .ToList();
+
+            ViewBag.CustomerList = _context.Customers
+                .Select(x => new SelectListItem
+                {
+                    Text = x.CustomerName + " " + x.CustomerSurname,
+                    Value = x.CustomerId.ToString(),
+                    Selected = x.CustomerId == value.CustomerId
+                })
+                .ToList();
+
             return View(value);
         }
 
