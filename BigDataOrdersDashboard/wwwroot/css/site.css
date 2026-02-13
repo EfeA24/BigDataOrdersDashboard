@@ -29,3 +29,59 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* Global select styling: replaces browser and Bootstrap defaults for all dropdowns. */
+select,
+select.form-control,
+select.form-select {
+  /* Remove native browser rendering to allow a fully custom dropdown appearance. */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* Consistent modern shape, spacing, and sizing across the app. */
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  min-height: 45px;
+  padding: 0.625rem 2.75rem 0.625rem 0.875rem;
+  line-height: 1.2;
+
+  /* Theme-friendly surface and text colors (falls back to light mode values). */
+  background-color: var(--bs-body-bg, #fff);
+  color: var(--bs-body-color, #212529);
+
+  /* Custom dark-gray SVG arrow icon and placement to the right side. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23555' d='M4.47 5.97a.75.75 0 0 1 1.06 0L8 8.44l2.47-2.47a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  background-size: 1rem;
+
+  /* Smooth interaction feedback without affecting overall form layout. */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hide the default expand arrow in old IE/Edge to avoid double icons. */
+select::-ms-expand {
+  display: none;
+}
+
+/* Accessible focus treatment with subtle cyan glow requested by design. */
+select:focus,
+select.form-control:focus,
+select.form-select:focus {
+  border-color: #66ecf5;
+  box-shadow: 0 0 0 0.2rem rgba(102, 236, 245, 0.25);
+  outline: 0;
+}
+
+/* Disabled dropdown state with muted colors and no pointer interaction hint. */
+select:disabled,
+select[disabled],
+select.form-control:disabled,
+select.form-select:disabled {
+  background-color: var(--bs-secondary-bg, #f1f3f5);
+  color: var(--bs-secondary-color, #6c757d);
+  border-color: #d6d6d6;
+  cursor: not-allowed;
+  opacity: 1;
+}
