@@ -1,87 +1,231 @@
+/* ======================================================
+   Base Typography & Layout
+======================================================*/
+
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* ======================================================
+   Focus Styling
+======================================================*/
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* ======================================================
+   Floating Placeholder Behavior
+======================================================*/
+
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
-/* Global select styling: replaces browser and Bootstrap defaults for all dropdowns. */
-select,
-select.form-control,
-select.form-select {
-  /* Remove native browser rendering to allow a fully custom dropdown appearance. */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  /* Consistent modern shape, spacing, and sizing across the app. */
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  min-height: 45px;
-  padding: 0.625rem 2.75rem 0.625rem 0.875rem;
-  line-height: 1.2;
-
-  /* Theme-friendly surface and text colors (falls back to light mode values). */
-  background-color: var(--bs-body-bg, #fff);
-  color: var(--bs-body-color, #212529);
-
-  /* Custom dark-gray SVG arrow icon and placement to the right side. */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23555' d='M4.47 5.97a.75.75 0 0 1 1.06 0L8 8.44l2.47-2.47a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.875rem center;
-  background-size: 1rem;
-
-  /* Smooth interaction feedback without affecting overall form layout. */
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+    text-align: start;
 }
 
-/* Hide the default expand arrow in old IE/Edge to avoid double icons. */
-select::-ms-expand {
-  display: none;
+/* ======================================================
+   GLOBAL SELECT STYLE (EXCEPT SELECT2)
+   Prevents conflict with Select2 (customdrop class)
+======================================================*/
+
+select:not(.customdrop),
+select.form-control:not(.customdrop),
+select.form-select:not(.customdrop) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    min-height: 45px;
+    padding: 0.625rem 2.75rem 0.625rem 0.875rem;
+    line-height: 1.2;
+    background-color: var(--bs-body-bg, #fff);
+    color: var(--bs-body-color, #212529);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23555' d='M4.47 5.97a.75.75 0 0 1 1.06 0L8 8.44l2.47-2.47a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.875rem center;
+    background-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Accessible focus treatment with subtle cyan glow requested by design. */
-select:focus,
-select.form-control:focus,
-select.form-select:focus {
-  border-color: #66ecf5;
-  box-shadow: 0 0 0 0.2rem rgba(102, 236, 245, 0.25);
-  outline: 0;
-}
+    select:not(.customdrop):focus,
+    select.form-control:not(.customdrop):focus,
+    select.form-select:not(.customdrop):focus {
+        border-color: #66ecf5;
+        box-shadow: 0 0 0 0.2rem rgba(102, 236, 245, 0.25);
+        outline: 0;
+    }
 
-/* Disabled dropdown state with muted colors and no pointer interaction hint. */
 select:disabled,
-select[disabled],
-select.form-control:disabled,
-select.form-select:disabled {
-  background-color: var(--bs-secondary-bg, #f1f3f5);
-  color: var(--bs-secondary-color, #6c757d);
-  border-color: #d6d6d6;
-  cursor: not-allowed;
-  opacity: 1;
+select[disabled] {
+    background-color: var(--bs-secondary-bg, #f1f3f5);
+    color: var(--bs-secondary-color, #6c757d);
+    border-color: #d6d6d6;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+/* ======================================================
+   SELECT2 FIXES
+======================================================*/
+
+/* Ensure full width */
+.select2-container {
+    width: 100% !important;
+}
+
+/* Keep dropdown above navbar/modals */
+.select2-container--open .select2-dropdown {
+    z-index: 9999 !important;
+}
+
+/* Prevent text overflow */
+.select2-container--default
+.select2-selection--single
+.select2-selection__rendered {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ======================================================
+   CustomDrop Theme Variables
+======================================================*/
+
+:root {
+    --cd-primary: #ff9800;
+    --cd-primary-soft: rgba(255, 152, 0, 0.15);
+    --cd-bg: #ffffff;
+    --cd-bg-elevated: #ffffff;
+    --cd-text: #2c2c2c;
+    --cd-muted: #8a8a8a;
+    --cd-border: rgba(0, 0, 0, 0.14);
+    --cd-border-strong: rgba(0, 0, 0, 0.25);
+    --cd-radius: 10px;
+    --cd-radius-sm: 6px;
+    --cd-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    --cd-height: 42px;
+}
+
+/* ======================================================
+   SELECT2 SINGLE STYLE
+======================================================*/
+
+.select2-container--default .select2-selection--single {
+    height: var(--cd-height);
+    border: 1px solid var(--cd-border);
+    border-radius: var(--cd-radius);
+    background: var(--cd-bg);
+    transition: all .15s ease;
+}
+
+.select2-container--default.select2-container--open .select2-selection--single {
+    border-color: var(--cd-primary);
+    box-shadow: 0 0 0 3px var(--cd-primary-soft);
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 40px;
+    padding-left: 12px;
+    font-size: 14px;
+    color: var(--cd-text);
+}
+
+/* ======================================================
+   SELECT2 MULTIPLE STYLE
+======================================================*/
+
+.select2-container--default .select2-selection--multiple {
+    min-height: var(--cd-height);
+    border-radius: var(--cd-radius);
+    border: 1px solid var(--cd-border);
+    background: var(--cd-bg);
+    padding: 4px 6px;
+    transition: all .15s ease;
+}
+
+.select2-container--default.select2-container--open .select2-selection--multiple {
+    border-color: var(--cd-primary);
+    box-shadow: 0 0 0 3px var(--cd-primary-soft);
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background: var(--cd-primary-soft);
+    border-radius: 50px;
+    padding: 4px 10px;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* ======================================================
+   CUSTOM DROPDOWN (Optional Manual Dropdown)
+======================================================*/
+
+.customdrop {
+    position: relative;
+    display: inline-block;
+}
+
+.customdrop-toggle {
+    height: var(--cd-height);
+    min-width: 220px;
+    padding: 0 12px;
+    border-radius: var(--cd-radius);
+    border: 1px solid var(--cd-border);
+    background: var(--cd-bg);
+    color: var(--cd-text);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all .15s ease;
+}
+
+.customdrop.is-open .customdrop-toggle {
+    border-color: var(--cd-primary);
+    box-shadow: 0 0 0 3px var(--cd-primary-soft);
+}
+
+.customdrop-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 100%;
+    background: var(--cd-bg-elevated);
+    border-radius: var(--cd-radius);
+    border: 1px solid var(--cd-border);
+    box-shadow: var(--cd-shadow);
+    padding: 6px;
+    display: none;
+    z-index: 1050;
+}
+
+.customdrop.is-open .customdrop-menu {
+    display: block;
 }
