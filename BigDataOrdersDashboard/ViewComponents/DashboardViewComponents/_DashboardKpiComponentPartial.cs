@@ -10,46 +10,48 @@ namespace BigDataOrdersDashboard.ViewComponents.DashboardViewComponents
         {
             _context = context;
         }
+
         public IViewComponentResult Invoke()
         {
             #region Kpi_1
+
             var today = DateTime.Today;
             var yesterday = today.AddDays(-1);
 
-            var todayOrderCount = _context.Orders.Where(x => x.OrderDate == today).Count();
-            var yesterdayOrderCount = _context.Orders.Where(x => x.OrderDate == yesterday).Count();
+            // ✅ Saat bilgisi varsa == tutmaz. Range en sağlıklısı (SQL'e her zaman çevrilir)
+            var todayOrderCount = _context.Orders.Count(x => x.OrderDate >= today && x.OrderDate < today.AddDays(1));
+            var yesterdayOrderCount = _context.Orders.Count(x => x.OrderDate >= yesterday && x.OrderDate < yesterday.AddDays(1));
 
-            if (todayOrderCount > yesterdayOrderCount)
-            {
-                ViewBag.TrendingIcon = "zmdi zmdi-trending-up float-right";
-            }
-            else
-            {
-                ViewBag.TrendingIcon = "zmdi zmdi-trending-down float-right";
-            }
+            ViewBag.TrendingIcon = (todayOrderCount > yesterdayOrderCount)
+                ? "zmdi zmdi-trending-up float-right"
+                : "zmdi zmdi-trending-down float-right";
 
+            // ✅ Senin istediğin mantık: veri yoksa hesaplama yapma
             decimal changeRate = 0;
-
-            changeRate = ((decimal)(todayOrderCount - yesterdayOrderCount) / yesterdayOrderCount) * 100;
-
-            if (changeRate < 0)
+            if (todayOrderCount >= 1 && yesterdayOrderCount >= 1) // payda 0 olmasın
             {
-                ViewBag.ChangeRateColor = "red";
-            }
-            else
-            {
-                ViewBag.ChangeRateColor = "green";
+                changeRate = ((decimal)(todayOrderCount - yesterdayOrderCount) / yesterdayOrderCount) * 100m;
             }
 
-            var dailyAverageOrders = _context.Orders.GroupBy(x => x.OrderDate.Date).Select(g => g.Count()).Average();
+            ViewBag.DailyOrderChange = Math.Round(changeRate, 2);
+            ViewBag.ChangeRateColor = changeRate < 0 ? "red" : "green";
+
+            // ✅ EF translate issue yaşamamak için günlük sayıları çek -> ortalamayı C# hesapla
+            var dailyCounts = _context.Orders
+                .GroupBy(x => x.OrderDate.Date)
+                .Select(g => g.Count())
+                .ToList();
+
+            double dailyAverageOrders = dailyCounts.Count > 0 ? dailyCounts.Average() : 0;
 
             double ratio = 0;
-            ratio = (todayOrderCount / dailyAverageOrders) * 100.0;
-
+            if (todayOrderCount >= 1 && dailyAverageOrders > 0) // payda 0 olmasın
+            {
+                ratio = (todayOrderCount / dailyAverageOrders) * 100.0;
+            }
 
             ViewBag.TodayVsAverageRatio = Math.Round(ratio, 2);
             ViewBag.TodayOrderCount = todayOrderCount;
-            ViewBag.DailyOrderChange = Math.Round(changeRate, 2);
 
             #endregion
 
@@ -57,13 +59,19 @@ namespace BigDataOrdersDashboard.ViewComponents.DashboardViewComponents
 
             var sevenDaysAgo = today.AddDays(-7);
 
-            var totalOrders7Days = _context.Orders.Count(x => x.OrderDate >= sevenDaysAgo && x.OrderDate < today.AddDays(1));
+            var totalOrders7Days = _context.Orders.Count(x =>
+                x.OrderDate >= sevenDaysAgo && x.OrderDate < today.AddDays(1));
 
-            var cancelledOrders7Days = _context.Orders.Count(x => x.OrderStatus == "İptal Edildi" && x.OrderDate >= sevenDaysAgo && x.OrderDate < today.AddDays(1));
-
+            var cancelledOrders7Days = _context.Orders.Count(x =>
+                x.OrderStatus == "İptal Edildi"
+                && x.OrderDate >= sevenDaysAgo
+                && x.OrderDate < today.AddDays(1));
 
             decimal cancelRate = 0;
-            cancelRate = ((decimal)cancelledOrders7Days / totalOrders7Days) * 100;
+            if (totalOrders7Days >= 1) // payda 0 olmasın
+            {
+                cancelRate = ((decimal)cancelledOrders7Days / totalOrders7Days) * 100m;
+            }
 
             ViewBag.CancelledOrders7Days = cancelledOrders7Days;
             ViewBag.CancelRate = Math.Round(cancelRate, 2);
@@ -75,19 +83,21 @@ namespace BigDataOrdersDashboard.ViewComponents.DashboardViewComponents
             #region Kpi_3
 
             var totalOrders = _context.Orders.Count();
-
             var completedOrders = _context.Orders.Count(x => x.OrderStatus == "Tamamlandı");
-            decimal completionRate = 0;
 
-            completionRate = ((decimal)completedOrders / totalOrders) * 100;
+            decimal completionRate = 0;
+            if (totalOrders >= 1) // payda 0 olmasın
+            {
+                completionRate = ((decimal)completedOrders / totalOrders) * 100m;
+            }
 
             ViewBag.CompletionRate = Math.Round(completionRate, 2);
             ViewBag.CompletedOrders = completedOrders;
-            ViewBag.CompletionText = completionRate >= 80 ? "Mükemmel Performans 💪" : "İyileşme Devam Ediyor 📈";
-
+            ViewBag.CompletionText = completionRate >= 80
+                ? "Mükemmel Performans 💪"
+                : "İyileşme Devam Ediyor 📈";
 
             #endregion
-
 
             return View();
         }
